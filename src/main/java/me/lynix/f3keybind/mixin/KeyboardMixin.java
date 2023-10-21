@@ -16,45 +16,40 @@ public class KeyboardMixin {
     private final MinecraftClient client = MinecraftClient.getInstance();
     @Inject(method = "onKey", at = @At("TAIL"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-        KeyboardAccessor keyboardAccessor = (KeyboardAccessor) MinecraftClient.getInstance().keyboard;
-        boolean switchF3State = keyboardAccessor.getSwitchF3State();
-        boolean bl = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode());    
-        InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
-        if (action == 0) {
-            KeyBinding.setKeyPressed(key2, false);
-            if (key == InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode()) {
-                if (switchF3State) {
-                    switchF3State = false;
-                } else {
-                    this.client.getDebugHud().toggleDebugHud();
-                }
-            }
-        } else {
-            if (key == 293 && this.client.gameRenderer != null) {
-                this.client.gameRenderer.togglePostProcessorEnabled();
-            }
-
-            boolean bl4 = false;
-            if (key == 256) {
-                this.client.openGameMenu(bl);
-                bl4 |= bl;
-            }
-
-            bl4 |= bl && keyboardAccessor.invokeProcessF3(key);
-            switchF3State |= bl4;
-            if (key == 290) {
-                this.client.options.hudHidden = !this.client.options.hudHidden;
-            }
-
-            if (bl4) {
+        if (window == this.client.getWindow().getHandle()) {
+            KeyboardAccessor keyboardAccessor = (KeyboardAccessor) MinecraftClient.getInstance().keyboard;
+            boolean switchF3State = keyboardAccessor.getSwitchF3State();
+            boolean bl = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode());
+            InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
+            if (action == 0) {
                 KeyBinding.setKeyPressed(key2, false);
+                if (key == InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode()) {
+                    if (switchF3State) {
+                        switchF3State = false;
+                    } else {
+                        this.client.getDebugHud().toggleDebugHud();
+                    }
+                }
             } else {
-                KeyBinding.setKeyPressed(key2, true);
-                KeyBinding.onKeyPressed(key2);
-            }
+                if (key == 293 && this.client.gameRenderer != null) {
+                    this.client.gameRenderer.togglePostProcessorEnabled();
+                }
 
-            if (this.client.getDebugHud().shouldShowRenderingChart() && !bl && key >= 48 && key <= 57) {
-                this.client.handleProfilerKeyPress(key - 48);
+                boolean bl4 = false;
+                if (key == 256) {
+                    this.client.openGameMenu(bl);
+                    bl4 |= bl;
+                }
+
+                bl4 |= bl && keyboardAccessor.invokeProcessF3(key);
+                switchF3State |= bl4;
+                if (key == 290) {
+                    this.client.options.hudHidden = !this.client.options.hudHidden;
+                }
+
+                if (this.client.getDebugHud().shouldShowRenderingChart() && !bl && key >= 48 && key <= 57) {
+                    this.client.handleProfilerKeyPress(key - 48);
+                }
             }
         }
     }
