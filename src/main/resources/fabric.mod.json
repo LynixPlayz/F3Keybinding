@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "f3keybind",
+  "version": "${version}",
+  "name": "F3Keybind",
+  "description": "A mod that allows you to change the keybind for the debug menu (aka F3)",
+  "authors": [
+    "LynixIsHere"
+  ],
+  "contact": {
+    "website": "alexthedev.me"
+  },
+  "license": "MIT",
+  "icon": "assets/f3Keybind/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.lynix.f3keybind.client.F3KeybindClient"
+    ],
+    "main": [
+      "me.lynix.f3keybind.F3Keybind"
+    ]
+  },
+  "mixins": [
+    "f3Keybind.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.22",
+    "fabric": "*",
+    "minecraft": "1.20.2"
+  }
+}
