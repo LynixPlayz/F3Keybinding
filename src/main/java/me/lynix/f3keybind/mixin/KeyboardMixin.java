@@ -16,24 +16,19 @@ public class KeyboardMixin {
     private final MinecraftClient client = MinecraftClient.getInstance();
     @Inject(method = "onKey", at = @At("HEAD"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-        System.out.println(action);
         if (window == this.client.getWindow().getHandle()) {
             KeyboardAccessor keyboardAccessor = (KeyboardAccessor) MinecraftClient.getInstance().keyboard;
             boolean switchF3State = keyboardAccessor.getSwitchF3State();
             boolean bl = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode());
             InputUtil.Key key2 = InputUtil.fromKeyCode(key, scancode);
             if (action == 1) {
-                System.out.println("1");
                 KeyBinding.setKeyPressed(key2, false);
-                System.out.println(InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode() + ",    " + key);
                 if (key == InputUtil.fromTranslationKey(F3KeybindClient.keyBinding.getBoundKeyTranslationKey()).getCode()) {
-                    System.out.println("2");
                     if (switchF3State) {
                         switchF3State = false;
                     } else {
                         this.client.getDebugHud().toggleDebugHud();
                     }
-                    System.out.println(switchF3State);
                 }
             } else {
                 /*if (key == 293 && this.client.gameRenderer != null) {
