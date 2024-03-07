@@ -1,3 +1,5 @@
+.env    # Ignore environment file
+
 # User-specific stuff
 .idea/
 
