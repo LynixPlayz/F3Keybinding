@@ -3,7 +3,6 @@ package me.lynix.f3keybind.mixin;
 import me.lynix.f3keybind.client.F3KeybindClient;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,11 +10,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(Keyboard.class)
 public class KeyboardMixin {
     private final MinecraftClient client = MinecraftClient.getInstance();
     @Inject(method = "onKey", at = @At("HEAD"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
+        if(Objects.equals(F3KeybindClient.keyBinding.getBoundKeyTranslationKey(), "key.keyboard.unknown")) return;
         if (window == this.client.getWindow().getHandle()) {
             KeyboardAccessor keyboardAccessor = (KeyboardAccessor) MinecraftClient.getInstance().keyboard;
             boolean switchF3State = keyboardAccessor.getSwitchF3State();
