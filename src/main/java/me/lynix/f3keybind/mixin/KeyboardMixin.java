@@ -50,7 +50,7 @@ public class KeyboardMixin {
                 }*/
 
                 if (this.client.getDebugHud().shouldShowRenderingChart() && !bl && key >= 48 && key <= 57) {
-                    this.client.handleProfilerKeyPress(key - 48);
+                    this.client.getDebugHud().getPieChart().select(key - 48);
                 }
             }
         }
